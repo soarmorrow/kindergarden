@@ -1,0 +1,109 @@
+<?php
+
+/* * *********************************
+ *  Admin settings change
+ * *********************************
+ * @file   : changeSettings.php
+ * @author : Vineeth N K(me@vineethkrisknan.in)
+ * 
+ */
+session_start();
+require_once '../assets/ajax/db.class.php';
+if ((!isset($_SESSION['username']) && empty($_SESSION['username'])) || (!isset($_SESSION['email']) && empty($_SESSION['email']))):
+    echo 'session expired';
+    exit;
+endif;
+if (isset($_POST) && !empty($_POST)) {
+    $connection = new DB();
+    $connection->getConnection();
+    if (isset($_POST['email']) && !empty($_POST['email'])) {
+        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            echo 'invalid email';
+            exit;
+        }
+        if ($_POST['email'] == $_SESSION['email']) {
+            echo 'old email';
+            exit;
+        }
+        $sql = "UPDATE `tc_users` SET `email` = '" . $_POST['email'] . "' WHERE `tc_users`.`user_id` = " . $_SESSION['user_id'] . ";";
+        try {
+            $change_email = $connection->query($sql);
+        } catch (PDOException $ex) {
+            echo 'Error: ' . $ex;
+        }
+        if (!$change_email) {
+            echo 'Database update error : ' . $connection->db->errorInfo();
+            exit;
+        }
+        $_SESSION['email'] = $_POST['email'];
+        echo 'email changed';
+        exit;
+    }
+    if ((isset($_POST['password']) && !empty($_POST['password'])) && (isset($_POST['re-password']) && !empty($_POST['re-password']))) {
+        if (strlen($_POST['password']) < 6) {
+            echo 'too small';
+            exit;
+        }
+        if ($_POST['password'] != $_POST['re-password']) {
+            echo 'mismatch';
+            exit;
+        }
+        $password = trim($_POST['password']);
+        $update = "UPDATE `tc_users` SET `password` = '" . md5($password) . "' WHERE `tc_users`.`user_id` =" . $_SESSION['user_id'] . ";";
+        try {
+            $change_password = $connection->query($update);
+        } catch (PDOException $ex) {
+            echo 'Error: ' . $ex;
+        }
+        if (!$change_password) {
+            echo 'Database update error : ' . $connection->db->errorInfo();
+            exit;
+        }
+        echo 'password changed';
+        exit;
+    }
+    if (isset($_POST['sid']) || !empty($_POST['sid'])) {
+        $sid = strip_tags(stripslashes(trim($_POST['sid'])));
+        $center = trim($_POST['center']);
+        $query = "SELECT count(*) FROM `tc_download` WHERE `sid`='{$sid}'";
+        try {
+            $checkSid = $connection->query($query);
+        } catch (PDOException $ex) {
+            echo 'Error: ' . $ex;
+        }
+        $sidExist = $checkSid->fetch(PDO::FETCH_NUM);
+        if ($sidExist[0] != 0) {
+            echo 'exists';
+            exit;
+        }
+        $sql = "INSERT INTO `tc_download` (`id` ,`sid`,`center`) VALUES ('' , '{$sid}', '{$center}');";
+        try {
+            $updateSid = $connection->runQuery($sql);
+        } catch (PDOException $ex) {
+            echo 'Error: ' . $ex;
+        }
+        if (!$updateSid) {
+            echo 'error';
+            exit;
+        }
+        echo 'sid updated';
+        exit;
+    }
+    if (isset($_POST['delSid']) || !empty($_POST['delSid'])) {
+        $id = trim($_POST['delSid']);
+        $statement = "DELETE FROM `tc_download` WHERE `tc_download`.`id` = $id";
+        try {
+            $deleted = $connection->query($statement);
+        } catch (PDOException $ex) {
+            echo $ex->getMessage();
+        }
+        if(!$deleted){
+            echo "Error on deleting item $id from password list. \n";exit;
+        }
+        echo 'deleted';
+        exit;
+    }
+} else {
+    echo 'script access restricted';
+}
+?>

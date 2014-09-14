@@ -1,0 +1,382 @@
+/* 
+    Document   : ajax
+    Created on : 27 Nov, 2013, 12:11:19 PM
+    Author     : Vineeth Krishnan (me@vineethkrisknan.in)
+*/
+jQuery(document).ready(function() {
+    $("#tc_dob").datepicker({
+        showAnim: "slideDown",
+        autoSize: true,
+        showOn: "both",
+        buttonImage: "assets/registration/images/calendar.png",
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: "yy-mm-dd",
+        navigationAsDateFormat: true,
+        yearRange: "2000:2014"
+    });
+    //$("#tc_registration").validate();
+    $("#tc_name").tooltip({
+        pplacement: 'top',
+        title: "Name should be in block letters"
+    });
+    $("#tc_cn").tooltip({
+        pplacement: 'top',
+        title: "This field is optional."
+    });
+    $("#tc_name").on('keyup', function() {
+        $(this).val($(this).val().toUpperCase());
+    });
+    $("#admin-login").on("click", function(e) {
+        if ($("[aria-labelledby='admin-login']").css('display') === 'block')
+            $("[aria-labelledby='admin-login']").slideUp();
+        else
+            $("[aria-labelledby='admin-login']").slideDown();
+        e.preventDefault();
+    });
+    $errorData = "";
+    function checkEmpty() {
+        var error = true;
+        $enroll = $("input:radio[name='tc_center']:checked").val();
+        if (typeof $enroll === 'undefined' || $enroll === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Enrolment center</li>";
+        }
+        $tc_fullname = $("#tc_fullname").val();
+        if (typeof $tc_fullname === 'undefined' || $tc_fullname === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Child fullname</li>";
+        }
+        $tc_addr1 = $("#tc_addr_1").val();
+        $tc_addr2 = $("#tc_addr_2").val();
+        $tc_city = $("#tc_city").val();
+        $tc_zip = $("#tc_zip").val();
+        if (typeof $tc_addr1 === 'undefined' || $tc_addr1 === '' || typeof $tc_addr2 === 'undefined' || $tc_addr2 === '' || typeof $tc_city === 'undefined' || $tc_city === '' || typeof $tc_zip === 'undefined' || $tc_zip === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Complete home address</li>";
+        }
+        $tc_home_phone = $("#tc_home_phone").val();
+        if (typeof $tc_home_phone === 'undefined' || $tc_home_phone === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Home phone number</li>";
+        }
+        $tc_dob = $("#tc_dob").val();
+        if (typeof $tc_dob === 'undefined' || $tc_dob === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Date of birth</li>";
+        }
+        $tc_kidnum = $("#tc_kidnum").val();
+        if (typeof $tc_kidnum === 'undefined' || $tc_kidnum === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> MyKid number</li>";
+        }
+        $tc_bcn = $("#tc_bcn").val();
+        if (typeof $tc_bcn === 'undefined' || $tc_bcn === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Birth Certificate Number</li>";
+        }
+        $tc_gender = $("input:radio[name='tc_gender']:checked").val();
+        if (typeof $tc_gender === 'undefined' || $tc_gender === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Sex</li>";
+        }
+        $tc_ethnic = $("input:radio[name='tc_ethnic']:checked").val();
+        if (typeof $tc_ethnic === 'undefined' || $tc_ethnic === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Racial Ethnic Group</li>";
+        }
+        $tc_religion = $("input:radio[name='tc_religion']:checked").val();
+        if (typeof $tc_religion === 'undefined' || $tc_religion === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Religion</li>";
+        }
+        $tc_citizen = $("input:radio[name='tc_citizen']:checked").val();
+        if (typeof $tc_citizen === 'undefined' || $tc_citizen === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Child Citizenship</li>";
+        }
+        $tc_disability = $("input:checkbox[name='tc_disability[]']:checked").val();
+        if (typeof $tc_disability === 'undefined' || $tc_disability === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Disability Information</li>";
+        }
+        $tc_father_name = $("input[name=tc_father_name]").val();
+        if (typeof $tc_father_name === 'undefined' || $tc_father_name === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Father's Name</li>";
+        }
+        $tc_father_nric = $("input[name=tc_father_nric]").val();
+        if (typeof $tc_father_nric === 'undefined' || $tc_father_nric === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Father's NRIC No</li>";
+        }
+        $tc_father_race = $("input[name=tc_father_race]").val();
+        if (typeof $tc_father_race === 'undefined' || $tc_father_race === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Father's RACE</li>";
+        }
+        $tc_father_religion = $("input[name=tc_father_religion]").val();
+        if (typeof $tc_father_religion === 'undefined' || $tc_father_religion === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Father's Religion</li>";
+        }
+        $tc_father_citizenship = $("input[name=tc_father_citizenship]").val();
+        if (typeof $tc_father_citizenship === 'undefined' || $tc_father_citizenship === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Father's Citizenship</li>";
+        }
+        $tc_father_hp = $("input[name=tc_father_hp]").val();
+        if (typeof $tc_father_hp === 'undefined' || $tc_father_hp === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Father's HP</li>";
+        }
+        $tc_father_email = $("input[name=tc_father_email]").val();
+        if (typeof $tc_father_email === 'undefined' || $tc_father_email === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Father's Email</li>";
+        }
+        $tc_mother_name = $("input[name=tc_mother_name]").val();
+        if (typeof $tc_mother_name === 'undefined' || $tc_mother_name === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Mother's Name</li>";
+        }
+        $tc_mother_nric = $("input[name=tc_mother_nric]").val();
+        if (typeof $tc_mother_nric === 'undefined' || $tc_mother_nric === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Mother's NRIC No</li>";
+        }
+        $tc_mother_race = $("input[name=tc_mother_race]").val();
+        if (typeof $tc_mother_race === 'undefined' || $tc_mother_race === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Mother's RACE</li>";
+        }
+        $tc_mother_religion = $("input[name=tc_mother_religion]").val();
+        if (typeof $tc_mother_religion === 'undefined' || $tc_mother_religion === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Mother's Religion</li>";
+        }
+        $tc_mother_citizenship = $("input[name=tc_mother_citizenship]").val();
+        if (typeof $tc_mother_citizenship === 'undefined' || $tc_mother_citizenship === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Mother's Citizenship</li>";
+        }
+        $tc_mother_hp = $("input[name=tc_mother_hp]").val();
+        if (typeof $tc_mother_hp === 'undefined' || $tc_mother_hp === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Mother's HP</li>";
+        }
+        $tc_mother_email = $("input[name=tc_mother_email]").val();
+        if (typeof $tc_mother_email === 'undefined' || $tc_mother_email === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Mother's Email</li>";
+        }
+        $payment_agreement = $("input:checkbox[name='tc_payment_agreement']:checked").val();
+        if (typeof $payment_agreement === 'undefined' || $enroll === '') {
+            $errorData += "<li><i class='fa fa-exclamation-triangle'></i> You must know that the RM50 will be charged as deposit when submit this form.</li>";
+        }
+        error = ($errorData === "") ? false : true;
+        return error;
+    }
+    $("#tc_registration input:not([type=button]):not([type=reset]):not([type=submit])").on('focus', function() {
+        $("#error-response").slideUp(1000, function() {
+            $errorData = "";
+            $("#error-status .error-data").empty();
+        });
+    });
+    $ssize = 0;
+    function encode(pwd) {
+        var iteration = 0;
+        var password = "";
+        var randomNumber;
+        while (iteration < 50) {
+            randomNumber = (Math.floor((Math.random() * 100)) % 94) + 33;
+            iteration++;
+            if ((randomNumber >= 33) && (randomNumber <= 47)) {
+                continue;
+            }
+            if ((randomNumber >= 58) && (randomNumber <= 64)) {
+                continue;
+            }
+            if ((randomNumber >= 91) && (randomNumber <= 96)) {
+                continue;
+            }
+            if ((randomNumber >= 123) && (randomNumber <= 126)) {
+                continue;
+            }
+            password += String.fromCharCode(randomNumber);
+        }
+        $ssize = password.length;
+        password += pwd;
+        iteration = 0;
+        while (iteration < 56) {
+            randomNumber = (Math.floor((Math.random() * 100)) % 94) + 33;
+            iteration++;
+            if ((randomNumber >= 33) && (randomNumber <= 47)) {
+                continue;
+            }
+            if ((randomNumber >= 58) && (randomNumber <= 64)) {
+                continue;
+            }
+            if ((randomNumber >= 91) && (randomNumber <= 96)) {
+                continue;
+            }
+            if ((randomNumber >= 123) && (randomNumber <= 126)) {
+                continue;
+            }
+            password += String.fromCharCode(randomNumber);
+        }
+        return password;
+    }
+    var $data;
+    $("#saveForm").on("click", function(e) {
+        if (checkEmpty()) {
+            $("#error-status .error-data").append($errorData);
+            $("#error-response").slideDown(1000);
+        } else {
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: 250,
+                width: 650,
+                modal: true,
+                open: function  open(event, ui) {
+                    $(".ui-dialog-buttonset button").addClass("btn btn-default").html("<i class='fa fa-refresh'></i> Recheck");
+                    $(".ui-dialog-buttonset button:first-child").html("<i class='fa fa-edit'></i> Submit");
+                },
+                buttons: {
+                    "Submit": function() {
+                        $data = $("#tc_registration").serialize();
+                        $.ajax({
+                            url: 'assets/ajax/transferData.php',
+                            type: 'POST',
+                            data: $data,
+                            error: function(errorResponse) {
+                                $errorData += "<li><i class='fa fa-exclamation-triangle'></i>Server communication failed! try later</i>";
+                                $("#error-status .error-data").empty().append($errorData);
+                                $("#error-response").slideDown(1000);
+                                $errorData="";
+                            }
+                        }).done(function(response) {
+                            if (response === 'empty') {
+                                $errorData += "<li><i class='fa fa-exclamation-triangle'></i> You must fill all fields</i>";
+                                $("#dialog-confirm").dialog('close');
+                                $("#error-status .error-data").empty().append($errorData);
+                                $("#error-response").slideDown(1000);
+                            }
+                            if (response === "invalid father email") {
+                                $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Father's email id is wrong</i>";
+                                $("#dialog-confirm").dialog('close');
+                                $("#error-status .error-data").empty().append($errorData);
+                                $("#error-response").slideDown(1000);
+                            }
+                            if (response === "invalid mother email") {
+                                $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Mother's email id is wrong</i>";
+                                $("#dialog-confirm").dialog('close');
+                                $("#error-status .error-data").empty().append($errorData);
+                                $("#error-response").slideDown(1000);
+                            }
+                            if (response === "ipn locked") {
+                                $errorData += "<li><i class='fa fa-exclamation-triangle'></i> This not an error, Transaction Lock is currently locked by someone else please try again after a few minute. Sorry for the inconvenience.</i>";
+                                $("#dialog-confirm").dialog('close');
+                                $("#error-status .error-data").empty().append($errorData);
+                                $("#error-response").slideDown(1000);
+                            }
+                            if (response === 'submit') {
+                                $("#dialog-confirm div").fadeOut(400, function() {
+                                    $(this).removeClass('alert-warning').addClass('alert-success');
+                                    $(this).html("<i class='fa fa-spinner'></i> Redirecting to Paypal. <br />Do not close or refresh browser window.").hide().fadeIn(400);
+                                });
+                                $("#paypal-payment-form").submit();
+                            }
+                            if (response === "Unauthorized access.") {
+                                $errorData += "<li><i class='fa fa-exclamation-triangle'></i> Server down at the moment. <br />We are working on it.<br /><strong>Please try later</strong></i>";
+                                $(this).dialog("close");
+                                $("#error-status .error-data").append($errorData);
+                                $("#error-response").slideDown(1000);
+                                return false;
+                            }
+                            $errorData = "";
+                        });
+                    },
+                    Cancel: function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+        e.preventDefault();
+    });
+    $("#login").on('click', function(evt) {
+        var user = $("#adminname").val();
+        var password = $("#password").val();
+        var size = password.length;
+        if (user === "") {
+            $("#response").empty().append("<div class='alert alert-error'><i class='fa fa-exclamation-circle'></i> Empty admin name!!</div>").hide().slideDown();
+            return false;
+        }
+        if (password === "") {
+            $("#response").empty().append("<div class='alert alert-error'><i class='fa fa-exclamation-circle'></i> Empty password!!</div>").hide().slideDown();
+            return false;
+        }
+        $(this).empty().html("&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-spinner'></i>&nbsp;&nbsp;&nbsp;&nbsp;").addClass('disabled').attr('disabled', 'disabled').css({'cursor': 'no-drop'});
+        password = encode(password);
+        $("#password").val(password);
+        $.ajax({
+            'url': 'assets/ajax/adminLogin.php',
+            'type': 'POST',
+            'data': {'admin': user, 'password': password, 'ss': size, 'ssl': $ssize}
+        }).done(function(data) {
+            if (data === "No admin") {
+                $("#response").empty().append("<div class='alert alert-error'><i class='fa fa-exclamation-circle'></i> Empty Admin name!!</div>").hide().slideDown();
+                $("#login").empty().html("<i class='fa fa-unlock-alt'></i> Log in").removeClass('disabled').attr('disabled', false).css({'cursor': 'pointer'});
+            }
+            if (data === "No password") {
+                $("#response").empty().append("<div class='alert alert-error'><i class='fa fa-exclamation-circle'></i> Empty password!!</div>").hide().slideDown();
+                $("#password").val("");
+                $("#login").empty().html("<i class='fa fa-unlock-alt'></i> Log in").removeClass('disabled').attr('disabled', false).css({'cursor': 'pointer'});
+            }
+            if (data === "Invalid login") {
+                $("#response").empty().append("<div class='alert alert-error'><i class='fa fa-exclamation-circle'></i> Invalid admin name or password!</div>").hide().slideDown();
+                $("#password").val("");
+                $("#login").empty().html("<i class='fa fa-unlock-alt'></i> Log in").removeClass('disabled').attr('disabled', false).css({'cursor': 'pointer'});
+            }
+            $loggedin = data.slice(0, 13);
+            if ($loggedin === "logged in as ") {
+                $user = data.slice($loggedin.length, data.length);
+                $("[aria-labelledby='admin-login']").addClass('logged-in');
+                $("#response").empty().append("<div class='alert alert-success'><i class='fa fa-user'></i> You are already logged in as <strong>" + $user + "</strong><br /><button type='button' class='btn btn-small btn-success' onclick='window.location.href= \"admin\"'><i class='fa fa-dashboard'> </i> &nbsp;" + $user + " Dashboard</button></div>").hide().slideDown();
+                $("#admin-login-section").fadeOut(900, function() {
+                    $(this).remove();
+                });
+            }
+            if (data === "logging in") {
+                window.location.href = "admin";
+            }
+        });
+        evt.preventDefault();
+    });
+    $('input[id="adminname"], input[id="password"]').on('focus', function() {
+        $("#response").slideUp('1000');
+        if ($("[aria-labelledby='admin-login']").hasClass('logged-in'))
+            $("[aria-labelledby='admin-login']").removeClass('logged-in');
+    });
+    $("#forgot").on('click', function(e) {
+        $(".password-field").fadeOut();
+        $admin = $("#adminname").val();
+        $("#login").attr('disabled', true);
+        if ($admin === "") {
+            $("[aria-labelledby='admin-login']").addClass('logged-in');
+            $("#response").empty().append("<div class='alert alert-error'><i class='fa fa-exclamation-circle'></i> Enter an admin name or registered email to recover your password</div>").hide().slideDown();
+            return false;
+        }
+        $.ajax({
+            'url': 'assets/ajax/passwordRecovery.php',
+            'type': 'POST',
+            'data': {'admin': $admin},
+            success: function(response) {
+                $loggedin = response.slice(0, 13);
+                if ($loggedin === "logged in as ") {
+                    $user = response.slice($loggedin.length, response.length);
+                    $("[aria-labelledby='admin-login']").addClass('logged-in');
+                    $("#response").empty().append("<div class='alert alert-success'><i class='fa fa-user'></i> You are already logged in as <strong>" + $user + "</strong><br /><button type='button' class='btn btn-small btn-success' onclick='window.location.href= \"admin\"'><i class='fa fa-dashboard'> </i> &nbsp;" + $user + " Dashboard</button></div>").hide().slideDown();
+                    $("#admin-login-section").fadeOut(900, function() {
+                        $(this).remove();
+                    });
+                }
+                if (response === "invalid admin") {
+                    $("[aria-labelledby='admin-login']").addClass('logged-in');
+                    $("#response").empty().append("<div class='alert alert-error'><strong><i class='fa fa-exclamation-circle'></i> " + $admin + "</strong> is not registered.</div>").hide().slideDown();
+                    $("#adminname").val("");
+                }
+                if (response === "request error") {
+                    $("[aria-labelledby='admin-login']").addClass('logged-in');
+                    $("#response").empty().append("<div class='alert alert-error'><strong><i class='fa fa-exclamation-circle'></i></strong>Error occured while processing request.<br />Try later. .</div>").hide().slideDown();
+                }
+                if (response === "request granted") {
+                    $("[aria-labelledby='admin-login']").addClass('logged-in');
+                    $("#response").empty().append("<div class='alert alert-success'><strong><i class='fa fa-check-circle'> </i> &nbsp;Reset link emailed</strong></div>").hide().slideDown();
+                    $(".password-field").fadeIn();
+                    $("#login").attr('disabled', false);
+                }
+            },
+            error: function(response) {
+                $("#response").empty().append("<div class='alert alert-danger'><strong><i class='fa fa-warning'> </i> &nbsp;Something went wrong!!</strong> <br />Server is currently unreachable check your network connection and try again later.<br/>Error Response : " + response + "</div>").hide().slideDown();
+            }
+        });
+        e.preventDefault();
+    });
+});
+

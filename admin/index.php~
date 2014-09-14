@@ -1,0 +1,314 @@
+<?php
+/* * *********************************
+ *  Admin Dashboard
+ * *********************************
+ * @file   : admin/index.php
+ * @author : Vineeth N K(me@vineethkrisknan.in)
+ * 
+ */
+session_start();
+if ((isset($_GET['action']) && !empty($_GET['action']))):
+    if ($_GET['action'] == 'logout') {
+        unset($_SESSION);
+        session_destroy();
+        echo "<meta http-equiv='refresh' content='0;url=../register.html'>";
+        exit;
+    }
+endif;
+define('AJAX_ROOT', "../assets/ajax");
+if (!file_exists(AJAX_ROOT . "/config.class.php") || !file_exists(AJAX_ROOT . "/driver.class.php") || !file_exists(AJAX_ROOT . "/db.class.php")):
+    echo 'Configuration file missing' . AJAX_ROOT;
+    exit;
+endif;
+require_once AJAX_ROOT . "/db.class.php";
+$dbconn = new DB();
+$dbconn->getConnection();
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="Vineeth Krishnan">
+
+        <title>Dashboard - BrightChild Admin controll panel</title>
+
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" rel="stylesheet">
+        <link href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables_themeroller.css" rel="stylesheet">
+        <link href="css/bc-admin.css?<?= uniqid() ?>" rel="stylesheet">
+        <link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/x-icon" />
+    </head>
+
+    <body>
+        <?php
+        if ((!isset($_SESSION['username']) && empty($_SESSION['username'])) || (!isset($_SESSION['email']) && empty($_SESSION['email']))):
+            ?>
+            <meta http-equiv='refresh' content='5;url=../register.html'>
+            <div class="alert alert-block alert-danger" style="text-align: center">
+                <h1 class="alert-heading">Session Expired.</h1>Please login as admin to continue on dashboard, You will be redirected within 5 seconds.<br />If you are still seeing this after 5s click <a href="../register.html" class="link">here</a>
+            </div>
+            <?php
+            exit;
+        endif;
+        ?>
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../admin/">BC Admin</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        <li class="active"><a href="../admin/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                        <li><a href="../index.html"><i class="fa fa-home"></i> Brightchild Home</a></li>
+                        <li><a href="../register.html"><i class="fa fa-pencil"></i> Registration Form</a></li>
+                        <li><a href="../gallery.html"><i class="fa fa-picture-o"></i> Gallery</a></li>
+                        <li><a href="../philosophy.html"><i class="fa fa-calendar"></i> Philosophy</a></li>
+                        <li><a href="../downloads.html"><i class="fa fa-download"></i> Downloads</a></li>
+                        <li><div class="divider"></div></li>
+                        <li><a href="#" id="hide-nav"><i class="direction-arrow fa fa-angle-double-left fa-2x"></i></a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right navbar-user">
+                        <li class="dropdown user-dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Howdy, <?= $_SESSION['username'] ?> <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#settings" data-toggle="modal" data-backdrop="static"><i class="fa fa-user"></i> Profile</a></li>
+                                <li class="divider"></li>
+                                <li><a href="?action=logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+
+            <div id="page-wrapper">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Dashboard <small>registration and payment overview</small></h1>
+                        <ol class="breadcrumb">
+                            <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
+                        </ol>
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            Welcome <strong><?= $_SESSION['username'] ?></strong>, to brightchild.com.my Dashboard. <br />Your last login time is <strong>
+                                <?php
+                                $time = $_SESSION['last_time'];
+                                $timezone = date_default_timezone_set("Asia/Singapore");
+                                $time_format = date("l, F d, Y h:i:s A", strtotime($time));
+                                echo $time_format;
+                                ?>
+                            </strong>
+                        </div>
+                        <div class="label label-time">
+                            Last Login : <?= $time_format ?>
+                        </div>
+                    </div>
+                </div><!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="modal fade" id="settings" tabindex="-1" role="dialog" aria-labelledby="changeSettings" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="changeSettings"><?php echo $_SESSION['username'] . "'s profile"; ?></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="#" method="post" id="form-settings" class="form-horizontal" role="form">
+                                            <div class="form-group">
+                                                <label for="username" class="col-sm-2 control-label">Username</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" disabled id="username" value="<?= $_SESSION['username'] ?>" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="old-email" class="col-sm-2 control-label">Email</label>
+                                                <div class="col-lg-6">
+                                                    <input type="email" class="form-control" disabled id="old-email" value="<?= $_SESSION['email'] ?>" />
+                                                    <input type="email" class="form-control" id="email" placeholder="New Email Address" required="required" />
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <p class="form-control-static"><a href="#change-email" id="show-email-input">Change</a></p>
+                                                    <div class="btn-group" id="button-mail">
+                                                        <button type="button" class="btn btn-success btn-sm" id="save-email"><i class="fa fa-save"></i> &nbsp;Save</button>
+                                                        <button type="button" class="btn btn-danger btn-sm" id="cancel-email"><i class="fa fa-undo"></i> &nbsp;Cancel</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-offset-2" id="email-response"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="old-password" class="col-sm-2 control-label">Password</label>
+                                                <div class="col-lg-6">
+                                                    <input type="password" class="form-control" id="old-password" value="resetmypwd" disabled/>
+                                                    <input type="password" class="form-control" id="password" placeholder="New Password" required="required"/>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <p class="form-control-static"><a href="#change-password" id="show-pwd-input">Change</a></p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="retypepwd">
+                                                <label for="new-password" class="col-sm-2 control-label">Confirm Password</label>
+                                                <div class="col-lg-6">
+                                                    <input type="password" class="form-control" id="re-password" placeholder="Confirm New Password" required="required"/>
+                                                    <div id="password-response"></div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-success btn-sm" id="save-password"><i class="fa fa-save"></i> &nbsp;Save</button>
+                                                        <button type="button" class="btn btn-danger btn-sm" id="cancel-password"><i class="fa fa-undo"></i> &nbsp;Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                        <div class="panel panel-primary" id="student-table">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Registration Statistics</h3>
+                            </div>
+                            <div class="panel-body">
+                                <a class="btn btn-default" href="excel" id="export-to-excel"><i class="fa fa-table"> </i> Export to Excel</a><br /><br />
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped tablesorter" id="student-details-table">
+                                        <thead><tr><th>Full name</th><th>Chinese Name</th><th>Centre</th><th>Address</th><th>Home Phone number</th><th>Date of birth</th><th>Kid number</th><th>Birth Certificate. Number</th><th>Gender</th><th>Racial Ethnic</th><th>Religion</th><th>Citizenship</th><th>Disability</th><th>Father's name</th><th>Mother's name</th><th>Father's NRIC No</th><th>Mother's NRIC No</th><th>Father's RACE</th><th>Mother's RACE</th><th>Father's Religion</th><th>Mother's Religion</th><th>Fathers's Citizenship</th><th>Mothers's Citizenship</th><th>Father's HP</th><th>Mother's HP</th><th>Father's Home number</th><th>Mother's Home number</th><th>Father's Office number</th><th>Mother's Office number</th><th>Father's occupation</th><th>Mother's occupation</th><th>Father's Email</th><th>Mother's Email</th><th>Action (view/download)</th></tr></thead>
+                                        <tbody>
+                                            <?php
+                                            foreach ($dbconn->query("SELECT * FROM tc_registered_students") as $student) {
+                                                echo "<tr><td> " . stripslashes($student['tc_fullname']) . "</td><td> " . stripslashes($student['tc_cn']) . "<td> " . stripslashes($student['tc_center']) . "</td>
+                                                    <td> " . stripslashes($student['tc_addr_1']) . "<br /> " . stripslashes($student['tc_addr_2']) . "<br /> " . stripslashes($student['tc_city']) . "<br /> " . stripslashes($student['tc_zip']) . "</td>
+                                                    <td>" . stripslashes($student['tc_home_phone']) . "</td><td>" . stripslashes($student['tc_dob']) . "</td><td>" . stripslashes($student['tc_kidnum']) . "</td><td>" . stripslashes($student['tc_bcn']) . "</td>
+                                                    <td>" . stripslashes($student['tc_gender']) . "</td><td>" . stripslashes($student['tc_ethnic']) . "</td><td>" . stripslashes($student['tc_religion']) . "</td><td>" . stripslashes($student['tc_citizenship']) . "</td>
+                                                    <td>" . stripslashes($student['tc_disability']) . "</td><td>" . stripslashes($student['tc_father_name']) . "</td><td>" . stripslashes($student['tc_mother_name']) . "</td><td>" . stripslashes($student['tc_father_nric_no']) . "</td>
+                                                    <td>" . stripslashes($student['tc_mother_nric_no']) . "</td><td>" . stripslashes($student['tc_father_race']) . "</td><td>" . stripslashes($student['tc_mother_race']) . "</td><td>" . stripslashes($student['tc_father_religion']) . "</td>
+                                                    <td>" . stripslashes($student['tc_mother_religion']) . "</td><td>" . stripslashes($student['tc_father_citizenship']) . "</td><td>" . stripslashes($student['tc_mother_citizenship']) . "</td><td>" . stripslashes($student['tc_father_hp']) . "</td>
+                                                    <td>" . stripslashes($student['tc_father_hp']) . "</td><td>" . stripslashes($student['tc_father_phone_home']) . "</td><td>" . stripslashes($student['tc_mother_phone_home']) . "</td><td>" . stripslashes($student['tc_father_office_phone']) . "</td>
+                                                    <td>" . stripslashes($student['tc_mother_office_phone']) . "</td><td>" . stripslashes($student['tc_father_occupation']) . "</td><td>" . stripslashes($student['tc_mother_occupation']) . "</td><td>" . stripslashes($student['tc_father_email']) . "</td><td>" . stripslashes($student['tc_mother_email']) . "</td><td class='download-student-details'><a class='view-pdf' title=\"View pdf\" href='pdf?sid=" . stripslashes($student['tc_id']) . "&action=view' target='_blank'><i class='fa fa-file-text'></i></a><a class='download-pdf' title=\"Download pdf\" href='pdf?sid=" . stripslashes($student['tc_id']) . "&action=download'><i class='fa fa-download'></i></a></td></tr>";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-money"></i> Recent Transactions</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped tablesorter" id="payment-details-table">
+                                        <thead>
+                                            <tr><th>Payment id</th><th>Payments date</th><th>Payer mail id</th><th>Transaction id</th><th>Payer id</th><th>payer IP address</th><th>IPN Track id</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            foreach ($dbconn->query("SELECT * FROM tc_payment") as $payment) {
+                                                echo "<tr><td>" . $payment['payment_id'] . "</td><td>" . date("d-m-Y H:i A", strtotime(substr($payment['payment_date'], 0, -3))) . "</td><td>" . $payment['payer_mail'] . "<td>" . $payment['txn_id'] . "</td><td>" . $payment['payer_id'] . "</td><td>" . $payment['payer_ip_addr'] . "</td><td>" . $payment['ipn_track_id'] . "</td></tr>";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-unlock-alt"> </i> &nbsp;&nbsp;Add Student ID to unlock file download</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-horizontal" action='#!/upadte' method='post' name='update-sid' id='sid-update' role='form'>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label" for="student-id">Student ID <span class="required">*</span></label>
+                                        <div class="col-lg-3">
+                                            <input type="text" class="form-control" name='sid' id='student-id' placeholder="Enter new student ID" required/>
+                                        </div>
+                                        <label class="col-lg-2 control-label" for="center">Center <span class="required">*</span></label>
+                                        <div class="col-lg-3">
+                                            <select id="center" class="form-control" name="center" required>
+                                                <option value="">Center</option>
+                                                <option value="Tadika Cerah">Tadika Cerah</option>
+                                                <option value="Tadika Era Baru">Tadika Era Baru</option>
+                                                <option value="Tadika Si Bijak">Tadika Si Bijak</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <button type="submit" name="submit" id="save-sid" class="btn btn-primary col-lg-8"><i class="fa fa-save"> </i>&nbsp;Save</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-10 col-lg-offset-1">
+                                            <div id="sid-response"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover sid-manage">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl.No</th>
+                                                <th>Student ID</th>
+                                                <th>Center</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sl = 0;
+                                            foreach ($dbconn->query("SELECT * FROM tc_download") as $ssid) {
+                                                $sl++;
+                                                ?>
+                                                <tr><td><?= $sl ?></td><td><?= $ssid['sid'] ?></td><td><?= $ssid['center'] ?></td><td><button type="button" class="btn btn-danger delSid" data-id="<?= $ssid['id'] ?>"><i class="fa fa-trash-o"> </i> Remove</button></td></tr>
+                                                <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /#page-wrapper -->
+
+        </div><!-- /#wrapper -->
+
+        <!-- JavaScript -->
+        <script src="js/jquery-1.10.2.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/admin.js?<?= uniqid() ?>"></script>
+    </body>
+</html>

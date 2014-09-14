@@ -1,0 +1,36 @@
+/* 
+    Document   : importFonts
+    Created on : Nov 9, 2013, 11:01:32 PM
+    Author     : Vineeth Krishnan
+    Author URL : http://vineethkrishnan.in
+    Author mail: me@vineethkrishnan.in
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Asset);
+@font-face {
+    font-family: 'Trebuchet MS';src: url('../fonts/Trebuchet MS.eot');
+    src: local('?'),url("../fonts/Trebuchet MS.woff") format("woff"),url("../fonts/Trebuchet MS.otf") format("opentype"),url("../fonts/Trebuchet MS.ttf") format("Truetype"),url("../fonts/Trebuchet MS.svg#trebuchet") format("svg");}
+@media screen and (max-device-width: 480px) {
+    @font-face {
+        font-family: 'Trebuchet MS';src: url('../fonts/Trebuchet MS.eot');
+        src: local('?'),url("../fonts/Trebuchet MS.woff") format("woff"),url("../fonts/Trebuchet MS.otf") format("opentype"),url("../fonts/Trebuchet MS.ttf") format("Truetype"),url("../fonts/Trebuchet MS.svg#trebuchet") format("svg");}}
+@font-face {
+    font-family: "Leelawadee";
+    src: url('../fonts/436462403-leelawad.eot');
+    src: local('?'),
+        url('../fonts/436462403-leelawad.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/436462403-leelawad.svg#Leelawadee') format('svg'),
+        url('../fonts/436462403-leelawad.woff') format('woff'),
+        url('../fonts/436462403-leelawad.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'vincehand_ii_trialregular';
+    src: url('../fonts/vh2trial-webfont.eot');
+    src: local('?'),
+        url('../fonts/vh2trial-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/vh2trial-webfont.woff') format('woff'),
+        url('../fonts/vh2trial-webfont.otf') format('opentype'),
+        url('../fonts/vh2trial-webfont.ttf') format('truetype'),
+        url('../fonts/vh2trial-webfont.svg#vincehand_ii_trialregular') format('svg');
+
+}
