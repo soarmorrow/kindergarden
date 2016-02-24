@@ -7,7 +7,7 @@
  */
 session_start();
 if ((!isset($_SESSION['username']) && empty($_SESSION['username'])) || (!isset($_SESSION['email']) && empty($_SESSION['email']))):
-   header('Location: /');
+    header('Location: /');
     exit;
 endif;
 require_once '../../assets/ajax/db.class.php';
@@ -29,25 +29,25 @@ PHPExcel_Shared_Font::setAutoSizeMethod(PHPExcel_Shared_Font::AUTOSIZE_METHOD_EX
 $cell = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L");
 
 $PHPExcel->getProperties()->setCreator("BrightChild Dashboard")
-        ->setLastModifiedBy($_SESSION['username'])
-        ->setTitle("Student Registration Details")
-        ->setSubject("Student Registration Details")
-        ->setDescription("Exported student details from brightchild dashboard")
-        ->setKeywords("bright child student registration details")
-        ->setCategory("Registration details");
+    ->setLastModifiedBy($_SESSION['username'])
+    ->setTitle("Student Registration Details")
+    ->setSubject("Student Registration Details")
+    ->setDescription("Exported student details from brightchild dashboard")
+    ->setKeywords("bright child student registration details")
+    ->setCategory("Registration details");
 
 $PHPExcel->setActiveSheetIndex(0)
-        ->setCellValue("A1", "  Student ID")
-        ->setCellValue("B1", "  Full Name")
-        ->setCellValue("C1", "  Chinese Name")
-        ->setCellValue("D1", "  Centre")
-        ->setCellValue("E1", "  Address Line 2")
-        ->setCellValue("F1", "  City")
-        ->setCellValue("G1", "  Zip")
-        ->setCellValue("H1", "  Home Phone Number")
-        ->setCellValue("J1", "  Date of Birth")
-        ->setCellValue("K1", "  MyKid Number")
-        ->setCellValue("L1", "  Parent's Email");
+    ->setCellValue("A1", "  Student ID")
+    ->setCellValue("B1", "  Full Name")
+    ->setCellValue("C1", "  Chinese Name")
+    ->setCellValue("D1", "  Centre")
+    ->setCellValue("E1", "  Address Line 2")
+    ->setCellValue("F1", "  City")
+    ->setCellValue("G1", "  Zip")
+    ->setCellValue("H1", "  Home Phone Number")
+    ->setCellValue("J1", "  Date of Birth")
+    ->setCellValue("K1", "  MyKid Number")
+    ->setCellValue("L1", "  Parent's Email");
 
 $db->setAssoc();
 $row = 3;
@@ -56,27 +56,27 @@ foreach ($db->query("SELECT * FROM tc_registered_students") as $student) {
     $col = 0;
     foreach ($student as $key => $value) {
         $PHPExcel->getActiveSheet()
-                ->setCellValueByColumnAndRow($col, $row, "  " . stripslashes($value));
+            ->setCellValueByColumnAndRow($col, $row, "  " . stripslashes($value));
         $col++;
     }
     $row++;
 }
 
 $PHPExcel->getActiveSheet()
-        ->getStyle("A1:AK1")
-        ->getFont()
-        ->setBold(true);
+    ->getStyle("A1:AK1")
+    ->getFont()
+    ->setBold(true);
 foreach ($cell as $columnID) {
 
     $PHPExcel->getActiveSheet()
-            ->getColumnDimension($columnID)
-            ->setAutoSize(true);
+        ->getColumnDimension($columnID)
+        ->setAutoSize(true);
 }
 
 $PHPExcel->getActiveSheet()
-        ->getStyle("A1:AK1")
-        ->getFill()
-        ->applyFromArray(array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'startcolor' => array('rgb' => 'D1D1D1')));
+    ->getStyle("A1:AK1")
+    ->getFill()
+    ->applyFromArray(array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'startcolor' => array('rgb' => 'D1D1D1')));
 
 $PHPExcel->setActiveSheetIndex(0);
 

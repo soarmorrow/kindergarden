@@ -11,7 +11,8 @@ if (isset($_POST) && !empty($_POST)) {
     if (!isset($_POST['admin']) || empty($_POST['admin'])) {
         echo 'No admin';
         exit;
-    }if (!isset($_POST['ss']) || $_POST['ss'] == 0) {
+    }
+    if (!isset($_POST['ss']) || $_POST['ss'] == 0) {
         echo 'No password';
         exit;
     }

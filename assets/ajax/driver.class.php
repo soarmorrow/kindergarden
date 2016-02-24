@@ -5,14 +5,15 @@
  * ****************************************
  * @file   : ajax/driver.class.php
  * @author : Vineeth N K(me@vineethkrisknan.in)
- * 
+ *
  * Description:
  *  DO NOT CHANGE ANYTHING HERE
  */
+class Driver
+{
 
-class Driver {
-
-    public static function loadDriver($dbtype, $dbhost, $dbname, $dbpath) {
+    public static function loadDriver($dbtype, $dbhost, $dbname, $dbpath)
+    {
         switch ($dbtype) {
             case "mysql":
                 $dsn = "mysql:host=$dbhost;dbname=$dbname";

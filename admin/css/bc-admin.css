@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : admin
     Created on : 30 Nov, 2013, 7:10:42 PM
     Author     : Vineeth Krishnan
@@ -19,8 +19,23 @@ body {
     width: 100%;
     padding: 5px 15px;
 }
-span.required{font-size: 15px;font-style: italic;vertical-align: bottom;font-weight: normal;color: #ff0000;}
-.processing{margin: 0 auto; width: 33px;height: 33px;background: url(../img/load.gif) no-repeat scroll 0 0 transparent; display: none;}
+
+span.required {
+    font-size: 15px;
+    font-style: italic;
+    vertical-align: bottom;
+    font-weight: normal;
+    color: #ff0000;
+}
+
+.processing {
+    margin: 0 auto;
+    width: 33px;
+    height: 33px;
+    background: url(../img/load.gif) no-repeat scroll 0 0 transparent;
+    display: none;
+}
+
 /* Nav Messages */
 
 .messages-dropdown .dropdown-menu .message-preview .avatar,
@@ -47,7 +62,6 @@ span.required{font-size: 15px;font-style: italic;vertical-align: bottom;font-wei
     font-size: 12px;
 }
 
-
 /* Nav Announcements */
 
 .announcement-heading {
@@ -68,28 +82,142 @@ table.tablesorter thead {
 table.tablesorter thead tr th:hover {
     background-color: #f5f5f5;
 }
-#student-table{
+
+#student-table {
     width: 6000px;
 }
-#hide-nav{text-align: center;}
-.direction-arrow{position: relative;right: 0;}
-.label-time{background-color: #5D5D5D;}
-#button-mail, #retypepwd, #password, #email{display: none;}
-#button-mail{margin-top: -5px;}
-#email-response,#password-response{display: none; text-align: center;}
-.download-student-details{text-align:center;vertical-align:middle !important;}
-.download-student-details a{font-size: 25px;color: #000;opacity: 0.5;transition: all 0.5s linear 0s;-o-transition: all 0.5s linear 0s;-ms-transition: all 0.5s linear 0s;-moz-transition: all 0.5s linear 0s;-webkit-transition: all 0.5s linear 0s; padding: 5px;}
-.download-student-details a:hover{opacity: 1;}
-#sid-response{text-align: center;}
-.sid-manage th, .sid-manage td{text-align: center;vertical-align: middle;}
-.fa.fa-spinner{animation-name: spinner; animation-delay: 0s;animation-duration: 2s;animation-iteration-count: infinite; animation-timing-function: cubic-bezier(0,0,1,1); -o-animation-name: spinner; -o-animation-delay: 0s;-o-animation-duration: 1s;-o-animation-iteration-count: infinite; -o-animation-timing-function: cubic-bezier(0,0,1,1); -ms-animation-name: spinner; -ms-animation-delay: 0s;-ms-animation-duration: 1s;-ms-animation-iteration-count: infinite; -ms-animation-timing-function: cubic-bezier(0,0,1,1); -moz-animation-name: spinner; -moz-animation-delay: 0s;-moz-animation-duration: 1s;-moz-animation-iteration-count: infinite; -moz-animation-timing-function: cubic-bezier(0,0,1,1); -webkit-animation-name: spinner; -webkit-animation-delay: 0s;-webkit-animation-duration: 1s;-webkit-animation-iteration-count: infinite; -webkit-animation-timing-function: cubic-bezier(0,0,1,1); }
-@keyframes spinner{ 0%{transform: rotate(0deg);} 100%{transform: rotate(360deg)}}
-@-o-keyframes spinner{ 0%{-o-transform: rotate(0deg);} 100%{-o-transform: rotate(360deg)}}
-@-ms-keyframes spinner{ 0%{-ms-transform: rotate(0deg);} 100%{-ms-transform: rotate(360deg)}}
-@-moz-keyframes spinner{ 0%{-moz-transform: rotate(0deg);} 100%{-moz-transform: rotate(360deg)}}
-@-webkit-keyframes spinner{ 0%{-webkit-transform: rotate(0deg);} 100%{-webkit-transform: rotate(360deg)}}
+
+#hide-nav {
+    text-align: center;
+}
+
+.direction-arrow {
+    position: relative;
+    right: 0;
+}
+
+.label-time {
+    background-color: #5D5D5D;
+}
+
+#button-mail, #retypepwd, #password, #email {
+    display: none;
+}
+
+#button-mail {
+    margin-top: -5px;
+}
+
+#email-response, #password-response {
+    display: none;
+    text-align: center;
+}
+
+.download-student-details {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.download-student-details a {
+    font-size: 25px;
+    color: #000;
+    opacity: 0.5;
+    transition: all 0.5s linear 0s;
+    -o-transition: all 0.5s linear 0s;
+    -ms-transition: all 0.5s linear 0s;
+    -moz-transition: all 0.5s linear 0s;
+    -webkit-transition: all 0.5s linear 0s;
+    padding: 5px;
+}
+
+.download-student-details a:hover {
+    opacity: 1;
+}
+
+#sid-response {
+    text-align: center;
+}
+
+.sid-manage th, .sid-manage td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.fa.fa-spinner {
+    animation-name: spinner;
+    animation-delay: 0s;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0, 0, 1, 1);
+    -o-animation-name: spinner;
+    -o-animation-delay: 0s;
+    -o-animation-duration: 1s;
+    -o-animation-iteration-count: infinite;
+    -o-animation-timing-function: cubic-bezier(0, 0, 1, 1);
+    -ms-animation-name: spinner;
+    -ms-animation-delay: 0s;
+    -ms-animation-duration: 1s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: cubic-bezier(0, 0, 1, 1);
+    -moz-animation-name: spinner;
+    -moz-animation-delay: 0s;
+    -moz-animation-duration: 1s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: cubic-bezier(0, 0, 1, 1);
+    -webkit-animation-name: spinner;
+    -webkit-animation-delay: 0s;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: cubic-bezier(0, 0, 1, 1);
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+@-o-keyframes spinner {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+    100% {
+        -o-transform: rotate(360deg)
+    }
+}
+
+@-ms-keyframes spinner {
+    0% {
+        -ms-transform: rotate(0deg);
+    }
+    100% {
+        -ms-transform: rotate(360deg)
+    }
+}
+
+@-moz-keyframes spinner {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+    100% {
+        -moz-transform: rotate(360deg)
+    }
+}
+
+@-webkit-keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg)
+    }
+}
+
 /* Edit Below to Customize Widths > 768px */
-@media (min-width:768px) {
+@media (min-width: 768px) {
 
     /* Wrappers */
     #wrapper {
@@ -101,7 +229,6 @@ table.tablesorter thead tr th:hover {
     }
 
     /* Side Nav */
-
     .side-nav {
         margin-left: -225px;
         left: 225px;
@@ -116,8 +243,7 @@ table.tablesorter thead tr th:hover {
     }
 
     /* Bootstrap Default Overrides - Customized Dropdowns for the Side Nav */
-
-    .side-nav>li.dropdown>ul.dropdown-menu {
+    .side-nav > li.dropdown > ul.dropdown-menu {
         position: relative;
         min-width: 225px;
         margin: 0;
@@ -129,29 +255,28 @@ table.tablesorter thead tr th:hover {
         -webkit-box-shadow: none;
     }
 
-    .side-nav>li.dropdown>ul.dropdown-menu>li>a {
+    .side-nav > li.dropdown > ul.dropdown-menu > li > a {
         color: #999999;
         padding: 15px 15px 15px 25px;
     }
 
-    .side-nav>li.dropdown>ul.dropdown-menu>li>a:hover,
-    .side-nav>li.dropdown>ul.dropdown-menu>li>a.active,
-    .side-nav>li.dropdown>ul.dropdown-menu>li>a:focus {
+    .side-nav > li.dropdown > ul.dropdown-menu > li > a:hover,
+    .side-nav > li.dropdown > ul.dropdown-menu > li > a.active,
+    .side-nav > li.dropdown > ul.dropdown-menu > li > a:focus {
         color: #fff;
         background-color: #080808;
     }
 
-    .side-nav>li>a {
+    .side-nav > li > a {
         width: 225px;
     }
 
-    .navbar-inverse .navbar-nav>li>a:hover,
-    .navbar-inverse .navbar-nav>li>a:focus {
+    .navbar-inverse .navbar-nav > li > a:hover,
+    .navbar-inverse .navbar-nav > li > a:focus {
         background-color: #080808;
     }
 
     /* Nav Messages */
-
     .messages-dropdown .dropdown-menu {
         min-width: 300px;
     }
@@ -161,8 +286,11 @@ table.tablesorter thead tr th:hover {
     }
 
 }
+
 @media only screen
 and (min-width: 260px)
-and (max-width: 768px){
-    #hide-nav{display: none;}
+and (max-width: 768px) {
+    #hide-nav {
+        display: none;
+    }
 }

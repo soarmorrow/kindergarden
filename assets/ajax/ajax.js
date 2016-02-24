@@ -1,9 +1,9 @@
-/* 
-    Document   : ajax
-    Created on : 27 Nov, 2013, 12:11:19 PM
-    Author     : Vineeth Krishnan (me@vineethkrisknan.in)
-*/
-jQuery(document).ready(function() {
+/**
+ Document   : ajax
+ Created on : 27 Nov, 2013, 12:11:19 PM
+ Author     : Vineeth Krishnan (me@vineethkrisknan.in)
+ */
+jQuery(document).ready(function () {
     $("#tc_dob").datepicker({
         showAnim: "slideDown",
         autoSize: true,
@@ -24,13 +24,13 @@ jQuery(document).ready(function() {
         pplacement: 'top',
         title: "This field is optional."
     });
-    $("#tc_name").on('keyup', function() {
+    $("#tc_name").on('keyup', function () {
         $(this).val($(this).val().toUpperCase());
     });
-    
+
     $ssize = 0;
     var $data;
-    $("#saveForm").on("click", function(e) {
+    $("#saveForm").on("click", function (e) {
         if (checkEmpty()) {
             $("#error-status .error-data").append($errorData);
             $("#error-response").slideDown(1000);
@@ -40,13 +40,13 @@ jQuery(document).ready(function() {
                 height: 250,
                 width: 650,
                 modal: true,
-                open: function  open(event, ui) {
+                open: function open(event, ui) {
                     $(".ui-dialog-buttonset button").addClass("btn btn-default").html("<i class='fa fa-refresh'></i> Recheck");
                     $(".ui-dialog-buttonset button:first-child").html("<i class='fa fa-edit'></i> Submit");
                 });
-	}
-   });
-    $("#forgot").on('click', function(e) {
+        }
+    });
+    $("#forgot").on('click', function (e) {
         $(".password-field").fadeOut();
         $admin = $("#adminname").val();
         $("#login").attr('disabled', true);
@@ -59,13 +59,13 @@ jQuery(document).ready(function() {
             'url': 'assets/ajax/passwordRecovery.php',
             'type': 'POST',
             'data': {'admin': $admin},
-            success: function(response) {
+            success: function (response) {
                 $loggedin = response.slice(0, 13);
                 if ($loggedin === "logged in as ") {
                     $user = response.slice($loggedin.length, response.length);
                     $("[aria-labelledby='admin-login']").addClass('logged-in');
                     $("#response").empty().append("<div class='alert alert-success'><i class='fa fa-user'></i> You are already logged in as <strong>" + $user + "</strong><br /><button type='button' class='btn btn-small btn-success' onclick='window.location.href= \"admin\"'><i class='fa fa-dashboard'> </i> &nbsp;" + $user + " Dashboard</button></div>").hide().slideDown();
-                    $("#admin-login-section").fadeOut(900, function() {
+                    $("#admin-login-section").fadeOut(900, function () {
                         $(this).remove();
                     });
                 }
@@ -85,7 +85,7 @@ jQuery(document).ready(function() {
                     $("#login").attr('disabled', false);
                 }
             },
-            error: function(response) {
+            error: function (response) {
                 $("#response").empty().append("<div class='alert alert-danger'><strong><i class='fa fa-warning'> </i> &nbsp;Something went wrong!!</strong> <br />Server is currently unreachable check your network connection and try again later.<br/>Error Response : " + response + "</div>").hide().slideDown();
             }
         });

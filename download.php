@@ -18,12 +18,12 @@ if (isset($_GET) || !empty($_GET)) {
         exit;
     }
     if (!isset($_GET['file']) || $_GET['file'] == "" || empty($_GET['file'])):
-        
+
         header('Location: /');
         exit;
     endif;
     if (!isset($_GET['category']) || $_GET['category'] == "" || empty($_GET['category'])):
-        
+
         header('Location: /');
         exit;
     endif;
@@ -32,21 +32,25 @@ if (isset($_GET) || !empty($_GET)) {
     $sid = addslashes(strip_tags($_GET['sid']));
     $category = stripslashes(strip_tags($_GET['category']));
     switch ($category) {
-        case "all": $path = "downloads/all_centres/";
+        case "all":
+            $path = "downloads/all_centres/";
             $center = 'all';
             break;
-        case "tc": $path = "downloads/tadika_cerah/";
+        case "tc":
+            $path = "downloads/tadika_cerah/";
             $center = 'Tadika Cerah';
             break;
-        case "eb": $path = "downloads/era_baru/";
+        case "eb":
+            $path = "downloads/era_baru/";
             $center = 'Tadika Era Baru';
             break;
-        case "sb": $path = "downloads/si_bijak/";
+        case "sb":
+            $path = "downloads/si_bijak/";
             $center = 'Tadika Si Bijak';
             break;
     }
-    $queryConstraint = ($center != 'all')?" AND `center`='$center';":";";
-    $query = "SELECT `sid` FROM `tc_download`  WHERE `sid`='$sid'".$queryConstraint;
+    $queryConstraint = ($center != 'all') ? " AND `center`='$center';" : ";";
+    $query = "SELECT `sid` FROM `tc_download`  WHERE `sid`='$sid'" . $queryConstraint;
     try {
         $verifyStudent = $db->query($query);
     } catch (PDOException $ex) {
@@ -59,12 +63,12 @@ if (isset($_GET) || !empty($_GET)) {
     $db->setAssoc();
     $verified = $verifyStudent->fetch(PDO::FETCH_ASSOC);
     if ($verified['sid'] == NULL) {
-        
+
         header('Location: /');
         exit;
     }
     if (strcmp($sid, $verified['sid']) !== 0) {
-        
+
         header('Location: /');
         exit;
     }
@@ -79,7 +83,7 @@ if (isset($_GET) || !empty($_GET)) {
         readfile($file);
         exit;
     } else {
-        
+
         header('Location: /');
         exit;
     }

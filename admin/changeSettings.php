@@ -1,6 +1,6 @@
 <?php
 
-/* * *********************************
+/*** *********************************
  *  Admin settings change
  * *********************************
  * @file   : changeSettings.php
@@ -98,8 +98,9 @@ if (isset($post) && !empty($post)) {
         } catch (PDOException $ex) {
             echo $ex->getMessage();
         }
-        if(!$deleted){
-            echo "Error on deleting item $id from password list. \n";exit;
+        if (!$deleted) {
+            echo "Error on deleting item $id from password list. \n";
+            exit;
         }
         echo 'deleted';
         exit;

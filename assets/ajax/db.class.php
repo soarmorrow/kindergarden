@@ -9,19 +9,22 @@
 require_once "config.class.php";
 require_once "driver.class.php";
 
-class DB {
+class DB
+{
 
     private $config;
     private $query;
     protected $db;
     protected $settings;
 
-    public function getConnection() {
+    public function getConnection()
+    {
         $this->config = new Config();
         $this->connectDB();
     }
 
-    private function connectDB() {
+    private function connectDB()
+    {
         $this->settings = $this->config->getDBAccess();
         $settings = $this->settings;
         try {
@@ -33,21 +36,32 @@ class DB {
             exit;
         }
     }
-    public function runQuery($query){
+
+    public function runQuery($query)
+    {
         $this->query = $query;
         return $this->excecuteQuery();
     }
-    public function query($query){
+
+    public function query($query)
+    {
         return $this->db->query($query);
     }
-    private function excecuteQuery(){
+
+    private function excecuteQuery()
+    {
         return $this->db->exec($this->query);
     }
-    public function lastInsertedId(){
+
+    public function lastInsertedId()
+    {
         return $this->db->lastInsertId();
     }
-    public function setAssoc(){
+
+    public function setAssoc()
+    {
         $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
 }
+
 ?>

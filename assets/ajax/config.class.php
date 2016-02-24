@@ -1,16 +1,18 @@
 <?php
+
 /*****************************************
  *  Configuration Script
  * ***************************************
  * @file   : ajax/config.class.php
  * @author : Vineeth N K(me@vineethkrisknan.in)
- * 
- * Description : 
+ *
+ * Description :
  *      This script is the main configuration file for the entire site.
  * Make necessary edit on confifuration to work the site properly.
- * 
+ *
  */
-class Config {
+class Config
+{
 
     protected $dbtype;
     protected $dbhost;
@@ -20,7 +22,8 @@ class Config {
     protected $dbpath;
     protected $settings;
 
-    private function setDBAccess() {
+    private function setDBAccess()
+    {
         /* Change DBTYPE, HOST, DATABASE, USER, PASSWORD here*/
         $this->dbtype = "mysql";
         $this->dbhost = "localhost";
@@ -30,7 +33,8 @@ class Config {
         $this->dbpath = "path to *.db"; // give path to db file if you are using postgreSQL  
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         try {
             $this->setDBAccess();
         } catch (Exception $ex) {
@@ -38,7 +42,8 @@ class Config {
         }
     }
 
-    public function getDBAccess() {
+    public function getDBAccess()
+    {
         $this->settings['db']['type'] = $this->dbtype;
         $this->settings['db']['host'] = $this->dbhost;
         $this->settings['db']['db_name'] = $this->dbname;
